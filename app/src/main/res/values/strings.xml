@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PopularMovies1</string>
+    <string name="noConnection">There seems to be an issue with your internet connection! \n Please connect to the net and try again</string>
+</resources>
