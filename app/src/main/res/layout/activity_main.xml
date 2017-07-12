@@ -15,7 +15,7 @@
         android:horizontalSpacing="0dp"
         android:stretchMode="columnWidth"
         android:background="#000000"
-        ></GridView>
+        />
 
     <!-- Empty view is only visible when the list has no items. -->
     <TextView

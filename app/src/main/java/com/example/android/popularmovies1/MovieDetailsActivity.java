@@ -10,7 +10,8 @@ import static com.example.android.popularmovies1.MainActivity.passDetailsObject;
 
 public class MovieDetailsActivity extends AppCompatActivity {
     private static String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
-
+    private static String RELEASE_DATE = "Release Date: ";
+    private static String USER_RATING ="User Rating: ";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +25,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Picasso.with(this).load(imagePath).into(moviePoster);
 
         TextView dateDisplay = (TextView) findViewById(R.id.dateView);
-        dateDisplay.setText("Release Date: " + passDetailsObject.getReleaseDate());
+        dateDisplay.setText(RELEASE_DATE + passDetailsObject.getReleaseDate());
 
         TextView userRating = (TextView) findViewById(R.id.userRatingView);
-        userRating.setText("User Rating: " + String.valueOf(passDetailsObject.getUserRating()));
+        userRating.setText(USER_RATING + String.valueOf(passDetailsObject.getUserRating()));
 
         TextView synopsisView = (TextView) findViewById(R.id.synopsisView);
         synopsisView.setText(passDetailsObject.getMovieOverview());

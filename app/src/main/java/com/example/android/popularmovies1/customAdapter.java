@@ -13,15 +13,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.example.android.popularmovies1.MainActivity.POSTER_BASE_URL;
 
 /**
  * Created by Akshay on 09-07-2017.
+ * defines a custom array adapter
  */
 
 public class customAdapter extends ArrayAdapter<movieDetails> {
 
-    //private static String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
+    final String POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
     public customAdapter(Context context, ArrayList<movieDetails> movieList){
         super(context, 0, movieList);
@@ -33,18 +33,16 @@ public class customAdapter extends ArrayAdapter<movieDetails> {
 
         View gridItemView = convertView;
         if(gridItemView == null) {
+            //inflate a new view
             gridItemView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item, parent, false);
         }
 
-        movieDetails currentMovie = getItem(position);
-
-        ImageView movieImage = (ImageView) gridItemView.findViewById(R.id.moviePosterHolder);
+        movieDetails currentMovie = getItem(position); //get reference to the current item
+        ImageView movieImage = (ImageView) gridItemView.findViewById(R.id.moviePosterHolder); //get reference to the image view
 
         String imageID = currentMovie.getImagePath();
         String imagePath = getImagePath(imageID);
-
         Picasso.with(getContext()).load(imagePath).into(movieImage);
-
         return gridItemView;
     }
 

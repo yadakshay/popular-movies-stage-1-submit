@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     private GridView movieGrid;
     private TextView mEmptyStateTextView;
-    private static String MOVIES_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     public static movieDetails passDetailsObject;
     private static String sortBy = "popularity.desc";
 
@@ -30,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /* check if there is a network connection*/
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -49,15 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public class movieQueryTask extends AsyncTask<String, Void, ArrayList<movieDetails>> {
+    private class movieQueryTask extends AsyncTask<String, Void, ArrayList<movieDetails>> {
 
         @Override
         protected ArrayList<movieDetails> doInBackground(String... params) {
             String queryURLString = params[0];
-
             ArrayList<movieDetails> capturedList = null;
-            capturedList = NetworkUtils.getMovies(queryURLString);
-
+            capturedList = NetworkUtils.getMovies(queryURLString); // returns the movie list in form of a custom movieDetails class
             return capturedList;
         }
 
@@ -65,11 +63,10 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(ArrayList<movieDetails> s) {
 
             ProgressBar loading = (ProgressBar) findViewById(R.id.loading_spinner);
-
             final ArrayList<movieDetails> movieList = s;
             loading.setVisibility(View.GONE);
+
             if (s != null && !s.equals("")) {
-                int numberOfColumns = 2;
                 movieGrid = (GridView) findViewById(R.id.movieGrid);
                 customAdapter adapter = new customAdapter(MainActivity.this, s);
                 movieGrid.setAdapter(adapter);
@@ -82,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         Context context = MainActivity.this;
                         Class destinationActivity = MovieDetailsActivity.class;
                         Intent intent = new Intent(context, destinationActivity);
-                        passDetailsObject = currentMovie;
+                        passDetailsObject = currentMovie; //global public variable to pass movie details to other activity
                         startActivity(intent);
                 }
 
@@ -93,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // inflate the menu
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }

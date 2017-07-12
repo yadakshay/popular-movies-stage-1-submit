@@ -21,16 +21,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * These utilities will be used to communicate with the network.
+ * These utilities will be used to communicate with the network and extract data form JSON format.
  */
 public class NetworkUtils {
 
     final static String PARAM_QUERY = "api_key";
-    final static String API_KEY = ""; //Enter your API key here
+    final static String API_KEY = "b4a74a2b2833f996408db276b3007cb7"; //Enter your API key here
     final static String PARAM_SORT = "sort_by";
     private static String MOVIES_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
 
-
+/* this method build the query url*/
     public static URL buildUrl(String sortBy) {
         Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM_SORT, sortBy)
@@ -43,48 +43,47 @@ public class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         return url;
     }
 
+/* method gets data from network  and returns it in form of an array list*/
     public static ArrayList<movieDetails> getMovies(String url) {
 
         URL queryURL = NetworkUtils.buildUrl(url);
-
         String jsonResponse = null;
         try {
             jsonResponse = NetworkUtils.getResponseFromHttpUrl(queryURL);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         ArrayList<movieDetails> movies = NetworkUtils.extractFromJSON(jsonResponse);
         return movies;
     }
 
-
+/*exacts data from the json format*/
     public static ArrayList<movieDetails> extractFromJSON(String jString){
         ArrayList<movieDetails> movies = new ArrayList<>();
 
-        try {
-            JSONObject jsonObject = new JSONObject(jString);
-            JSONArray moviesArray = jsonObject.getJSONArray("results");
+        if(jString!= null) {
+            try {
+                JSONObject jsonObject = new JSONObject(jString);
+                JSONArray moviesArray = jsonObject.getJSONArray("results");
 
-            for (int i=0; i < moviesArray.length(); i++)
-            {
-                JSONObject m = moviesArray.getJSONObject(i);
-                String movieTitle = m.getString("original_title");
-                String imageTitle = m.getString("poster_path");
-                String movieOverview = m.getString("overview");
-                String releaseDate = m.getString("release_date");
-                double userRating = m.getDouble("vote_average");
-                movies.add(new movieDetails(movieTitle, imageTitle, movieOverview, releaseDate, userRating));
+                for (int i = 0; i < moviesArray.length(); i++) {
+                    JSONObject m = moviesArray.getJSONObject(i);
+                    String movieTitle = m.getString("original_title");
+                    String imageTitle = m.getString("poster_path");
+                    String movieOverview = m.getString("overview");
+                    String releaseDate = m.getString("release_date");
+                    double userRating = m.getDouble("vote_average");
+                    movies.add(new movieDetails(movieTitle, imageTitle, movieOverview, releaseDate, userRating));
+                }
+            } catch (JSONException e) {
+                Log.e("QueryUtils", "Problem parsing JSON results", e);
             }
+            return movies;
         }
-        catch (JSONException e) {
-            Log.e("QueryUtils", "Problem parsing JSON results", e);
-        }
-        return movies;
+        else{return null;}
     }
 
     /**
