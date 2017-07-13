@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private GridView movieGrid;
     private TextView mEmptyStateTextView;
     public static movieDetails passDetailsObject;
-    private static String sortBy = "popularity.desc";
+    private static String sortBy = "popular";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.mostPopular) {
-            sortBy = "popularity.desc";
+            sortBy = "popular";
             new movieQueryTask().execute(sortBy);
             return true;
         }
         if (id == R.id.mostRated) {
-            sortBy = "vote_average.desc";
+            sortBy = "top_rated";
             new movieQueryTask().execute(sortBy);
             return true;
         }

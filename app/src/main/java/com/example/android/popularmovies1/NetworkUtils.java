@@ -26,14 +26,13 @@ import java.util.Scanner;
 public class NetworkUtils {
 
     final static String PARAM_QUERY = "api_key";
-    final static String API_KEY = "b4a74a2b2833f996408db276b3007cb7"; //Enter your API key here
-    final static String PARAM_SORT = "sort_by";
-    private static String MOVIES_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
+    final static String API_KEY = ""; //Enter your API key here
+    private static String MOVIES_BASE_URL = "https://api.themoviedb.org/3/movie/";
 
 /* this method build the query url*/
     public static URL buildUrl(String sortBy) {
-        Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                .appendQueryParameter(PARAM_SORT, sortBy)
+        String queryURL = MOVIES_BASE_URL + sortBy;
+        Uri builtUri = Uri.parse(queryURL).buildUpon()
                 .appendQueryParameter(PARAM_QUERY, API_KEY)
                 .build();
 
